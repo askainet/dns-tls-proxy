@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dns-tls-proxy
+spec:
+  type: NodePort
+  ports:
+  - name: tcp
+    port: 15353
+    targetPort: 15353
+    protocol: TCP
+  - name: udp
+    port: 15353
+    targetPort: 15353
+    protocol: UDP
+  selector:
+    app: dns-tls-proxy

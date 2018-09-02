@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: dns-tls-proxy
+spec:
+  replicas:
+  template:
+    metadata:
+      name: dns-tls-proxy
+      labels:
+        app: dns-tls-proxy
+        env: dev
+    spec:
+      containers:
+      - name: dns-tls-proxy
+        image: askainet/dns-tls-proxy:latest
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        command: ["dns-tls-proxy"]
+        ports:
+        - name: tcp
+          containerPort: 15353
+        - name: udp
+          protocol: UDP
+          containerPort: 15353
+        readinessProbe:
+          tcpSocket:
+            port: tcp
+        env:
+        - name: ENABLE_TCP
+          value: "1"
+        - name: ENABLE_UDP
+          value: "1"
+        - name: ENABLE_STATS
+          value: "1"
+        - name: NAMESERVERS
+          value: "1.1.1.1:853:cloudflare-dns.com,9.9.9.9:853:dns.quad9.net"
+        - name: PORT
+          value: "15353"

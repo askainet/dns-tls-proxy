@@ -1,0 +1,4 @@
+pytest
+dnspython
+gevent
+ConfigArgParse
